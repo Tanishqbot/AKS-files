@@ -27,5 +27,5 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t tanishqacr.azurecr.io/hello-web-app:v1 .
-          docker push tanishqacr.azurecr.io/hello-web-app:v1
+          docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/hello-web-app:v1 .
+          docker push ${{ secrets.ACR_LOGIN_SERVER }}/hello-web-app:v1
