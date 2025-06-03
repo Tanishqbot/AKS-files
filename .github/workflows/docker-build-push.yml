@@ -1,31 +1,26 @@
-name: Build and Push to ACR
+name: Build and Push Docker Image to ACR
 
 on:
   push:
     branches:
-      - main  # or your default branch
+      - main
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout source
         uses: actions/checkout@v3
 
-      - name: Login to Azure CLI
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Build and push Docker image
+      - name: Log in to ACR
         uses: azure/docker-login@v1
         with:
-          login-server: tanishqacr.azurecr.io
+          login-server: ${{ secrets.ACR_LOGIN_SERVER }}
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
 
-      - name: Build Docker image
+      - name: Build and push image
         run: |
           docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/hello-web-app:v1 .
           docker push ${{ secrets.ACR_LOGIN_SERVER }}/hello-web-app:v1
